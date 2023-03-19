@@ -10,5 +10,5 @@ public:
     virtual void tick(float deltaTime) override;
     void setTarget(Character* character) { target = character; }
 private:
-    BaseCharacter* target;
+    Character* target;
 };
