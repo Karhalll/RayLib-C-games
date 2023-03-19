@@ -1,14 +1,12 @@
-#include "raylib.h"
-#include "raymath.h"
 
-#include "BaseCharacter.h"
+#ifndef BASE_CHARACTER_H
+#define BASE_CHARACTER_H
 
-class Character : public BaseCharacter
+class BaseCharacter
 {
 public:
-    Character(int winWidth, int winHeight);
+    BaseCharacter();
     Vector2 getWorldPos() { return worldPos; }
-    void tick(float deltaTime);
     void undoMovement();
     Rectangle GetCollisionRec();
 private:
@@ -31,3 +29,5 @@ private:
     float height{};
     float scale{4.f};
 };
+
+#endif
