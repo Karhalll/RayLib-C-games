@@ -1,6 +1,7 @@
-
 #ifndef BASE_CHARACTER_H
 #define BASE_CHARACTER_H
+
+#include "raylib.h"
 
 class BaseCharacter
 {
@@ -9,7 +10,7 @@ public:
     Vector2 getWorldPos() { return worldPos; }
     void undoMovement();
     Rectangle GetCollisionRec();
-private:
+protected:
     Texture2D texture{LoadTexture("characters/knight_idle_spritesheet.png")};
     Texture2D idle{texture};
     Texture2D run{LoadTexture("characters/knight_run_spritesheet.png")};
