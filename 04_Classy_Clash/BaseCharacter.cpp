@@ -5,6 +5,20 @@ BaseCharacter::BaseCharacter()
 
 }
 
+void BaseCharacter::undoMovement()
+{
+    worldPos = worldPosLastFrame;
+}
+
+Rectangle BaseCharacter::getCollisionRec()
+{
+    return Rectangle{
+        screenPos.x,
+        screenPos.y,
+        width * scale,
+        height * scale};
+}
+
 void BaseCharacter::tick(float deltaTime)
 {
     worldPosLastFrame = worldPos;
@@ -23,18 +37,4 @@ void BaseCharacter::tick(float deltaTime)
     Rectangle source{frame * width, 0.f, rightLeft * width, height};
     Rectangle dest{screenPos.x, screenPos.y, width * scale, height * scale};
     DrawTexturePro(texture, source, dest, Vector2{}, 0.f, WHITE);
-}
-
-void BaseCharacter::undoMovement()
-{
-    worldPos = worldPosLastFrame;
-}
-
-Rectangle BaseCharacter::GetCollisionRec()
-{
-    return Rectangle{
-        screenPos.x,
-        screenPos.y,
-        width * scale,
-        height * scale};
 }

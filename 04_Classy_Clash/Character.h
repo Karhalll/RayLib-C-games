@@ -2,7 +2,6 @@
 #define CHARACTER_H
 
 #include "raylib.h"
-#include "raymath.h"
 
 #include "BaseCharacter.h"
 

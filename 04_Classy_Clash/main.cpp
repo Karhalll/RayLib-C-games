@@ -1,6 +1,5 @@
 #include "raylib.h"
 #include "raymath.h"
-
 #include "Character.h"
 #include "Prop.h"
 #include "Enemy.h"
@@ -11,21 +10,20 @@ int main()
     const int windowHeight{384};
     InitWindow(windowWidth, windowHeight, "Classy Clash");
 
-    Texture2D mapTexture = LoadTexture("nature_tileset/OpenWorldMap24x24.png");
-    Vector2 mapPos{0.f, 0.f};
-    const float mapScale{4.f};
+    Texture2D map = LoadTexture("nature_tileset/OpenWorldMap24x24.png");
+    Vector2 mapPos{0.0, 0.0};
+    const float mapScale{4.0f};
+
     Character knight{windowWidth, windowHeight};
 
     Prop props[2]{
         Prop{Vector2{600.f, 300.f}, LoadTexture("nature_tileset/Rock.png")},
-        Prop{Vector2{400.f, 500.f}, LoadTexture("nature_tileset/Log.png")
-    }};
+        Prop{Vector2{400.f, 500.f}, LoadTexture("nature_tileset/Log.png")}};
 
     Enemy goblin{
         Vector2{300.f, 300.f},
         LoadTexture("characters/goblin_idle_spritesheet.png"),
-        LoadTexture("characters/goblin_run_spritesheet.png"),
-    };
+        LoadTexture("characters/goblin_run_spritesheet.png")};
     goblin.setTarget(&knight);
 
     SetTargetFPS(60);
@@ -34,33 +32,30 @@ int main()
         BeginDrawing();
         ClearBackground(WHITE);
 
-        Vector2 knightPos = knight.getWorldPos();
+        mapPos = Vector2Scale(knight.getWorldPos(), -1.f);
+
         // draw the map
-        mapPos = Vector2Scale(knightPos, -1.f);
-        DrawTextureEx(mapTexture, mapPos, 0.f, mapScale, WHITE);
+        DrawTextureEx(map, mapPos, 0.0, 4.0, WHITE);
+
         // draw the props
         for (auto prop : props)
         {
-            prop.Render(knightPos);
+            prop.render(knight.getWorldPos());
         }
 
-        // check map bounds
         knight.tick(GetFrameTime());
-        if (knightPos.x < 0.f ||
-            knightPos.y < 0.f ||
-            knightPos.x + windowWidth > mapTexture.width * mapScale ||
-            knightPos.y + windowHeight > mapTexture.height * mapScale)
+        // check map bounds
+        if (knight.getWorldPos().x < 0.f ||
+            knight.getWorldPos().y < 0.f ||
+            knight.getWorldPos().x + windowWidth > map.width * mapScale ||
+            knight.getWorldPos().y + windowHeight > map.height * mapScale)
         {
             knight.undoMovement();
         }
-
-        // check for collisions
+        // check prop collisions
         for (auto prop : props)
         {
-            Rectangle knightRect = knight.GetCollisionRec();
-            Rectangle propRect = prop.GetCollisionRec(knight.getWorldPos());
-            bool isCollidingWithKnight = CheckCollisionRecs(propRect, knightRect);
-            if (isCollidingWithKnight)
+            if (CheckCollisionRecs(prop.getCollisionRec(knight.getWorldPos()), knight.getCollisionRec()))
             {
                 knight.undoMovement();
             }

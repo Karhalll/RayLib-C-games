@@ -1,4 +1,5 @@
 #include "Character.h"
+#include "raymath.h"
 
 Character::Character(int winWidth, int winHeight)
 {
@@ -11,6 +12,8 @@ Character::Character(int winWidth, int winHeight)
 
 void Character::tick(float deltaTime)
 {
+    BaseCharacter::tick(deltaTime);
+
     Vector2 direction{};
     Vector2 movement{};
     if (IsKeyDown(KEY_A))
@@ -35,7 +38,5 @@ void Character::tick(float deltaTime)
     {
         texture = idle;
     }
-
-    BaseCharacter::tick(deltaTime);
 }
 
