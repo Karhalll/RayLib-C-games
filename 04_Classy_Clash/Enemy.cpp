@@ -15,7 +15,7 @@ void Enemy::tick(float deltaTime)
 {
     worldPosLastFrame = worldPos;
 
-    // update animation frame
+    // update animations frame
     runningTime += deltaTime;
     if (runningTime >= updateTime)
     {
