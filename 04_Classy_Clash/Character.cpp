@@ -1,42 +1,33 @@
 #include "Character.h"
 #include "raymath.h"
 
-Character::Character(int winWidth, int winHeight)
+Character::Character(int winWidth, int winHeight) :
+    windowWidth(winWidth),
+    windowHeight(winHeight)
 {
     width = (float)texture.width / (float)maxFrames;
     height = (float)texture.height;
-    screenPos = {
-        static_cast<float>(winWidth) / 2.f - scale * (0.5f * width),
-        static_cast<float>(winHeight) / 2.f - scale * (0.5f * height)};
 }
 
 void Character::tick(float deltaTime)
 {
-    BaseCharacter::tick(deltaTime);
-
-    Vector2 direction{};
-    Vector2 movement{};
     if (IsKeyDown(KEY_A))
-        direction.x -= 1.f;
+        velocity.x -= 1.f;
     if (IsKeyDown(KEY_D))
-        direction.x += 1.f;
+        velocity.x += 1.f;
     if (IsKeyDown(KEY_W))
-        direction.y -= 1.f;
+        velocity.y -= 1.f;
     if (IsKeyDown(KEY_S))
-        direction.y += 1.f;
-    if (Vector2Length(direction) != 0.f)
-    {
-        direction = Vector2Normalize(direction);
-        movement = Vector2Scale(direction, speed);
+        velocity.y += 1.f;
 
-        worldPos = Vector2Add(worldPos, movement);
-        direction.x < 0.f ? rightLeft = -1.f : rightLeft = 1.f;
+    BaseCharacter::tick(deltaTime);
+}
 
-        texture = run;
-    }
-    else
-    {
-        texture = idle;
-    }
+Vector2 Character::getScreenPos()
+{
+    return Vector2{
+        static_cast<float>(windowWidth) / 2.f - scale * (0.5f * width),
+        static_cast<float>(windowHeight) / 2.f - scale * (0.5f * height)
+    };
 }
 
